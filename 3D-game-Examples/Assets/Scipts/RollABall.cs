@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RollABall : MonoBehaviour
 {
-    public float = 10f
+    public float Speed = 10f;
 
     private float _horizontalInput;
     private float _forwardInput;
@@ -19,8 +19,8 @@ public class RollABall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _horizontalInput = _horizontalInput.GetAxis("Horizontal");
-        _forwardInput = _forwardInput.GetAxis("Vertical");
+        _horizontalInput = Input.GetAxis("Horizontal");
+        _forwardInput = Input.GetAxis("Vertical");
 
     }
     void FixedUpdate()
@@ -28,10 +28,7 @@ public class RollABall : MonoBehaviour
         Vector3 movement = new Vector3(_horizontalInput, 0.0f, _forwardInput);
 
         _playerRigidbody.AddForce(movement * Speed);
-
-       //
     }
-
 }
 
 
