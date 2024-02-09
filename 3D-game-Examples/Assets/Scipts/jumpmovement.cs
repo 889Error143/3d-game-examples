@@ -1,9 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
+using TMPro;
 
 public class jumpmovement : MonoBehaviour
 {
+    public TextMeshProUGUI scoreText;
+    public int score = 0;
     public float JumpForce = 10f;
     public float GravityModifier = 1f;
     public bool IsOnGround = true;
@@ -20,10 +22,10 @@ public class jumpmovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         _playerRigidbody = GetComponent<Rigidbody>();
         Physics.gravity *= GravityModifier;
         _startingPosition = transform.position;
+        scoreText.text = "Score" + score.ToString();
     }
 
     // Update is called once per frame
@@ -63,12 +65,19 @@ public class jumpmovement : MonoBehaviour
         {
             IsOnGround = true;
         }
-        if (collision.Gameobject./ Compare)
+        if (collision.gameObject.CompareTag("Dead Zone"))
         {
-             
+            if (_isAtCheckpoint)
+            {
+                transform.position = _checkpointPosition;
+            }
+            else
+            {
+                transform.position = _startingPosition;
+            }
         }
-
     }
+   
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Checkpoint"))
@@ -78,10 +87,17 @@ public class jumpmovement : MonoBehaviour
         }
         if(other.gameObject.CompareTag("Endpoint"))
         {
+        _isAtCheckpoint = false;
             transform.position = _startingPosition;
 
         }
 
-    }
 
+        if(other.gameObject.CompareTag("Collectible"))
+        {
+        score++;
+        scoreText.text = "Score: " + score.ToString();
+        Destroy(other.gameObject);
+        }
+    }
 }
